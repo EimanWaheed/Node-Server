@@ -14,14 +14,12 @@ const serverConnection = http.createServer(function (req, res) {
   const responseInstance = response.getInstance();
   try {
     requestInstance.initialiseRequest(req, () => {
-      requestInstance.initialiseRequest(req, () => {
-        const params = requestInstance.getParams();
-        const htmlResponse = responseInstance.generateResponse(params);
-        res.writeHead(responseInstance.getStatusCode(), {
-          "Content-Type": "text/html",
-        });
-        res.end(htmlResponse);
+      const params = requestInstance.getParams();
+      const htmlResponse = responseInstance.generateResponse(params);
+      res.writeHead(responseInstance.getStatusCode(), {
+        "Content-Type": "text/html",
       });
+      res.end(htmlResponse);
     });
   } catch (error) {
     res.writeHead(500, { "Content-Type": "text/html" });
