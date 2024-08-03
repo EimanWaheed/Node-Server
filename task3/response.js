@@ -1,6 +1,7 @@
 const validator = require("validator");
+const RSVP = require("rsvp");
 
-/** 
+/**
  * Class responsible for generating HTML responses.
  */
 class Response {
@@ -64,30 +65,36 @@ class Response {
    * @returns
    */
   generateResponse = (address) => {
-    if (!address.length) {
-      this.setStatusCode(404);
-      return `<html><body><h1>No addresses provided</h1></body></html>`;
-    }
-    return `
-    <html>
-    <head></head>
-    <body>
-    <h1> Following are the titles of given websites: </h1>
-        <ul>
-          ${address
-            .map(
-              (url) =>
-                `<li> ${url} - ${
-                  this.isValidAddress(url)
-                    ? `"${this.fetchTitleName(url)}"`
-                    : "NO RESPONSE"
-                } </li>`
-            )
-            .join("\n")}
-        </ul>
-      </body>
-    </html>
-  `;
+    return new RSVP.Promise((resolve, reject) => {
+      try {
+        if (!address.length) {
+          this.setStatusCode(404);
+          resolve(`<html><body><h1>No addresses provided</h1></body></html>`);
+        }
+        resolve(`
+        <html>
+        <head></head>
+        <body>
+        <h1> Following are the titles of given websites: </h1>
+            <ul>
+              ${address
+                .map(
+                  (url) =>
+                    `<li> ${url} - ${
+                      this.isValidAddress(url)
+                        ? `"${this.fetchTitleName(url)}"`
+                        : "NO RESPONSE"
+                    } </li>`
+                )
+                .join("\n")}
+            </ul>
+          </body>
+        </html>
+      `);
+      } catch (error) {
+        throw new Error(error);
+      }
+    });
   };
 }
 module.exports = Response;

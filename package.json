@@ -10,7 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "rsvp": "^4.8.5",
     "validator": "^13.12.0"
   }
 }
