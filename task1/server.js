@@ -1,6 +1,9 @@
+require("dotenv").config();
 const http = require("http");
 const request = require("./request");
 const response = require("./response");
+
+const port = process.env.PORT || 3000;
 
 /**
  * Creates local HTTP server which is responsible for handling incoming request which is a single entry point.
@@ -26,4 +29,4 @@ const serverConnection = http.createServer(function (req, res) {
     res.end("<html><body><h1>Internal Server Error</h1></body></html>");
   }
 });
-serverConnection.listen(3000);
+serverConnection.listen(port);
