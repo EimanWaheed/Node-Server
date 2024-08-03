@@ -9,7 +9,7 @@ const response = require("./response");
  * @param {string} req
  * @param {string} res
  */
-let serverConnection = http.createServer(function (req, res) {
+const serverConnection = http.createServer(function (req, res) {
   const requestInstance = request.getInstance();
   const responseInstance = response.getInstance();
   try {
