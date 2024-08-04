@@ -64,30 +64,31 @@ class Response {
    * @returns
    */
   generateResponse = (address) => {
-    const titleNames = [];
-    if (!address.length) {
-      this.setStatusCode(404);
-      return `<html><body><h1>No addresses provided</h1></body></html>`;
-    }
-    async.map(
-      address,
-      (url) => {
-        titleNames.push(
-          `<li>${url} - "${
-            this.isValidAddress(url)
-              ? `${this.fetchTitleName(url)}`
-              : "NO RESPONSE"
-          }"</li>`
-        );
-      },
-      (err) => {
-        if (err) {
-          this.setStatusCode(500);
-          throw new Error(err);
-        }
+    try {
+      const titleNames = [];
+      if (!address.length) {
+        this.setStatusCode(404);
+        return `<html><body><h1>No addresses provided</h1></body></html>`;
       }
-    );
-    const htmlResponse = `
+      async.map(
+        address,
+        (url) => {
+          titleNames.push(
+            `<li>${url} - "${
+              this.isValidAddress(url)
+                ? `${this.fetchTitleName(url)}`
+                : "NO RESPONSE"
+            }"</li>`
+          );
+        },
+        (err) => {
+          if (err) {
+            this.setStatusCode(500);
+            throw new Error(err);
+          }
+        }
+      );
+      const htmlResponse = `
           <html>
           <head></head>
           <body>
@@ -98,8 +99,11 @@ class Response {
           </body>
           </html>
         `;
-    this.setStatusCode(200);
-    return htmlResponse;
+      this.setStatusCode(200);
+      return htmlResponse;
+    } catch (err) {
+      throw new Error(err);
+    }
   };
 }
 module.exports = Response;
